@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Sign up Page</h1>
+  <form action="/recruiters/signup" method="POST" onsubmit="return validateForm()">
+    <label for="username">Username</label>
+    <input type="text" name="username" placeholder="username" />
+    <label for="email">Email</label>
+    <input type="email" name="email" placeholder="email" />
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="password" />
+    <label for="password">Confirm Password</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm password" required />
+    <label for="contact">Contact</label>
+    <input type="text" name="contact" placeholder="contact" />
+    <label for="company">Company</label>
+    <input type="text" name="company" placeholder="company" />
+    <button id="recruitersignup">Signup</button>
+    <script>
+      function validateForm() {
+        let passwd = document.getElementById("password").value;
+        let confirmpasswd = document.getElementById("confirmPassword").value;
+        if (passwd !== confirmpasswd) {
+          alert("Password and Confirm Password do not match");
+          return false; 
+        }
+        return true; 
+      }
+    </script>
+  </form>
+</body>
+</html>
