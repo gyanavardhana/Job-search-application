@@ -1,61 +1,35 @@
 const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
-const Router = express.Router();
+const router = express.Router();
+const { recruitersignup, recruiterlogin } = require('../controllers/recruiter');
 
-const Recruiter = require('../Models/recruitermodel');
 
 
-Router.use(express.json());
-Router.use(express.urlencoded({ extended: false }));
-Router.use(session({
+router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
+router.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true
 }));
-Router.use(flash());
+router.use(flash());
 
 
-Router.get('/recruiters/profile',(req,res)=>{
+router.get('/recruiters/profile',(req,res)=>{
     res.render('profile', {messages: req.flash()});
 })
 
-Router.get('/recruiters/login',(req,res)=>{
+router.get('/recruiters/login',(req,res)=>{
     res.render('login', {messages: req.flash()});
 })
 
-Router.get('/recruiters/signup',(req,res)=>{
+router.get('/recruiters/signup',(req,res)=>{
     res.render('signup');
 });
 
-Router.post('/recruiters/signup', async(req,res)=>{
-    const recruiter = new Recruiter(req.body);
-    await recruiter.save()
-    .then((result)=>{
-        res.redirect('/recruiters/login');
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-})
+router.post('/recruiters/signup', recruitersignup);
 
-Router.post('/recruiters/login', async (req, res) => {
-    const { email, password } = req.body;
-    let user = await Recruiter.findOne({ email });
-    if (user) {
-        if (user.password === password) {
-            req.flash('success', 'Login Successful');      
-            res.status(200).redirect('/recruiters/profile' );
-        } else {
-            console.log('Invalid Credentials');
-            req.flash('error', 'Invalid Credentials');
-            res.status(401).redirect('/recruiters/login' );
-        }
-    } else {
-        console.log('Invalid Credentials');
-        req.flash('error', 'Invalid Credentials');
-        res.status(401).redirect('/recruiters/login');
-    }
-});
+router.post('/recruiters/login', recruiterlogin);
 
-module.exports = Router;
+module.exports = router;
