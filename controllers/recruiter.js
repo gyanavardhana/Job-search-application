@@ -3,7 +3,20 @@ const Recruiter = require('../Models/recruitermodel');
 const bcrypt = require('bcrypt');
 const datadictionary = require('../exports');
 
-async function recruitersignup (req,res){
+function recruiterSignupPage(req,res){
+    return res.render('signup',{messages: req.flash()});
+}
+
+function recruiterLoginPage(req,res){
+    return res.render('login',{messages: req.flash()});
+}
+
+function recruiterProfilePage(req,res){
+    return res.render('profile',{messages: req.flash()});
+}
+
+
+async function recruitersignup(req, res) {
     const recruiter = new Recruiter(
         {
             name: req.body.name,
@@ -13,31 +26,42 @@ async function recruitersignup (req,res){
         }
     )
     await recruiter.save()
-    .then((result)=>{
-        res.status(datadictionary.ok).redirect('/recruiters/login');
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
+        .then((result) => {
+            res.status(datadictionary.ok).redirect('/recruiters/login');
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 }
 
 
-async function getuserbyemail(email) {
-    try{
-        const user = await Recruiter.findOne({email: email});
-        return user;
-    }catch(err){
+
+
+async function recruiterlogout(req, res) {
+
+    req.logOut((err) => {
         console.log(err);
-    } 
+    });
+    res.redirect('/recruiters/login');
+
+}
+
+async function getuserbyemail(email) {
+    try {
+        const user = await Recruiter.findOne({ email: email });
+        return user;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 async function getuserbyid(id) {
-    try{
+    try {
         const user = await Recruiter.findById(id);
         return user;
-    }catch(err){
+    } catch (err) {
         console.log(err);
-    } 
+    }
 }
 
 
@@ -57,10 +81,15 @@ async function checkNotAuthenticated(req, res, next) {
 }
 
 
+
 module.exports = {
+    recruiterSignupPage,
+    recruiterLoginPage,
+    recruiterProfilePage,
     recruitersignup,
+    recruiterlogout,
     getuserbyemail,
     getuserbyid,
     checkAuthenticated,
-    checkNotAuthenticated
+    checkNotAuthenticated,
 }

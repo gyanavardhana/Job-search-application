@@ -9,11 +9,9 @@ const recruiterroutes = require('./routes/recruiterauth');
 
 app.set('view engine', 'ejs');
 
-const Job = require('./Models/jobsmodel');
-const Candidate = require('./Models/candidatemodel');
+
 app.use(recruiterroutes);
-app.get('/', (req, res) => {
-    res.send('hello world');});
+
     
 
 // all routes
