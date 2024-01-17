@@ -14,6 +14,7 @@
     <label for="password">Password</label>
     <input type="password" id="passwd" name="password" placeholder="password" />
     <button id="recruiterlogin">Login</button>
+    <a href="/recruiters/register">Dont' have an account,Register</a>
     <% if (messages.error) { %>
       <script>
         alert('<%= messages.error %>');
@@ -23,6 +24,7 @@
         alert('<%= messages.success %>');
       </script>
     <% } %> 
+
   </form>
 </body>
 </html>
