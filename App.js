@@ -9,9 +9,10 @@ const recruiterroutes = require('./routes/recruiterauth');
 
 app.set('view engine', 'ejs');
 
-const Job = require('./Models/jobsmodel');
-const Candidate = require('./Models/candidatemodel');
+
 app.use(recruiterroutes);
+
+    
 
 // all routes
 
