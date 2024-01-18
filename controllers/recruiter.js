@@ -2,9 +2,11 @@
 const Recruiter = require('../Models/recruitermodel');
 const bcrypt = require('bcrypt');
 const datadictionary = require('../exports');
+const passport = require('passport');
+const initializePassport = require('../passport-config');
 
 
-
+initializePassport(passport, getuserbyemail, getuserbyid);
 
 
 
@@ -39,11 +41,20 @@ async function recruitersignup(req, res) {
         })
 }
 
+async function recruiterlogin(req, res, next) {
+    passport.authenticate('local', {
+        successRedirect: '/recruiters/profile',
+        failureRedirect: '/recruiters/login',
+        failureFlash: true
+    })(req, res, next);
+}
 
 async function recruiterlogout(req, res) {
 
     req.logOut((err) => {
-        console.log(err);
+        if(err){
+            console.log(err);
+        }
     });
     res.redirect('/recruiters/login');
 
@@ -90,6 +101,7 @@ module.exports = {
     recruiterLoginPage,
     recruiterProfilePage,
     recruitersignup,
+    recruiterlogin,
     recruiterlogout,
     getuserbyemail,
     getuserbyid,
