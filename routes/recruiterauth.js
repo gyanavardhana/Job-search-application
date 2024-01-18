@@ -2,11 +2,9 @@ const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
 const methodOveride = require('method-override');
-const initializePassport = require('../passport-config');
 const router = express.Router();
 const passport = require('passport');
 const rController = require('../controllers/recruiter');
-initializePassport(passport, rController.getuserbyemail, rController.getuserbyid);
 
 
 
@@ -39,11 +37,8 @@ rController.recruiterProfilePage);
 router.post('/recruiters/signup', 
 rController.recruitersignup);
 
-router.post('/recruiters/login', passport.authenticate('local', {
-    successRedirect: '/recruiters/profile',
-    failureRedirect: '/recruiters/login',
-    failureFlash: true
-}));
+router.post('/recruiters/login',
+rController.recruiterlogin);
 
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);
