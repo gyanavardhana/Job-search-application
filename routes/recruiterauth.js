@@ -1,12 +1,12 @@
 const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
-const router = express.Router();
-const passport = require('passport');
 const methodOveride = require('method-override');
 const initializePassport = require('../passport-config');
-const recruiterController = require('../controllers/recruiter');
-initializePassport(passport, recruiterController.getuserbyemail, recruiterController.getuserbyid);
+const router = express.Router();
+const passport = require('passport');
+const rController = require('../controllers/recruiter');
+initializePassport(passport, rController.getuserbyemail, rController.getuserbyid);
 
 
 
@@ -24,23 +24,20 @@ router.use(methodOveride('_method'));
 
 
 
-
-
-
 router.get('/recruiters/signup', 
-recruiterController.checkNotAuthenticated,
-recruiterController.recruiterSignupPage);
+rController.checkNotAuthenticated,
+rController.recruiterSignupPage);
 
 router.get('/recruiters/login', 
-recruiterController.checkNotAuthenticated, 
-recruiterController.recruiterLoginPage);
+rController.checkNotAuthenticated, 
+rController.recruiterLoginPage);
 
 router.get('/recruiters/profile', 
-recruiterController.checkAuthenticated, 
-recruiterController.recruiterProfilePage);
+rController.checkAuthenticated, 
+rController.recruiterProfilePage);
 
 router.post('/recruiters/signup', 
-recruiterController.recruitersignup);
+rController.recruitersignup);
 
 router.post('/recruiters/login', passport.authenticate('local', {
     successRedirect: '/recruiters/profile',
@@ -49,7 +46,7 @@ router.post('/recruiters/login', passport.authenticate('local', {
 }));
 
 router.delete('/recruiters/logout', 
-recruiterController.recruiterlogout);
+rController.recruiterlogout);
 
 
 

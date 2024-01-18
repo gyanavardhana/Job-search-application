@@ -3,6 +3,11 @@ const Recruiter = require('../Models/recruitermodel');
 const bcrypt = require('bcrypt');
 const datadictionary = require('../exports');
 
+
+
+
+
+
 function recruiterSignupPage(req,res){
     return res.render('signup',{messages: req.flash()});
 }
@@ -33,8 +38,6 @@ async function recruitersignup(req, res) {
             console.log(err);
         })
 }
-
-
 
 
 async function recruiterlogout(req, res) {
