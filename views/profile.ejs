@@ -5,9 +5,14 @@
     <title>Profile</title>
 </head>
 <body>
+  
+  <h2>Welcome <%= user.username %> from <%= user.company %></h2>
   <h1>Recruiters Profile Page</h1>
-    <form action="/recruiters/logout?_method=DELETE" method="post" >
+  <form action="/recruiters/home?_method=GET" method="post" >
+    <button>Home Page</button>
+  </form>
+  <form action="/recruiters/logout?_method=DELETE" method="post" >
       <button>Logout</button>
-    </form>
+  </form>
 </body>
 </html>

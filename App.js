@@ -5,12 +5,11 @@ const port = 3000;
 
 
 const recruiterroutes = require('./routes/recruiterauth');
-// database connection
 
 app.set('view engine', 'ejs');
 
-
 app.use(recruiterroutes);
+
 
     
 

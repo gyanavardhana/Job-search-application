@@ -38,7 +38,29 @@ router.post('/recruiters/signup',
 rController.recruitersignup);
 
 router.post('/recruiters/login',
+rController.checkNotAuthenticated,
 rController.recruiterlogin);
+
+router.get('/recruiters/home',
+rController.checkAuthenticated,
+rController.recruiterMyJobs,
+rController.recruiterHomePage);
+
+router.get('/recruiters/postjobs',
+rController.checkAuthenticated,
+rController.recruiterPostPage);
+
+router.post('/recruiters/postajob',
+rController.checkAuthenticated,
+rController.recruiterPostaJob);
+
+router.get('/recruiters/myjobs',
+rController.checkAuthenticated,
+rController.recruiterMyJobs);
+
+router.delete('/recruiters/myjobs/:id',
+rController.checkAuthenticated,
+rController.recruiterDeleteJob);
 
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);

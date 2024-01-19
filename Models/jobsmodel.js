@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema({
     title: String,
     salary: Number,
     location: String,
+    company: String,
     description: String,
     recruiter: {
         type: mongoose.Schema.Types.ObjectId,
