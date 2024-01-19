@@ -1,4 +1,3 @@
-
 const Recruiter = require('../Models/recruitermodel');
 const Job = require('../Models/jobsmodel');
 const bcrypt = require('bcrypt');
@@ -9,7 +8,10 @@ const initializePassport = require('../passport-config');
 
 initializePassport(passport, getuserbyemail, getuserbyid);
 
-
+function ifError(err, req, res, next){
+    console.error(err);
+    res.status(datadictionary.internalServerError).send('Internal Server Error');
+}
 
 function recruiterSignupPage(req,res){
     return res.render('signup',{messages: req.flash()});
@@ -24,29 +26,32 @@ function recruiterProfilePage(req,res){
         const user = req.user;
         return res.render('profile', { user, messages: req.flash() });
     } catch (err) {
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
 
 
+
 async function recruitersignup(req, res) {
-    const recruiter = new Recruiter(
-        {
+    try {
+        const recruiter = new Recruiter({
             username: req.body.username,
             email: req.body.email,
             password: await bcrypt.hash(req.body.password, 10),
             company: req.body.company
+        });
+
+        await recruiter.save();
+        res.status(datadictionary.ok).redirect('/recruiters/login');
+    } catch (err) {
+        if (err.code === datadictionary.mongoerror) {
+            req.flash('error', datadictionary.userexists);
+            res.render('signup', { messages: req.flash() });
+        } else {
+            next(err);
         }
-    )
-    await recruiter.save()
-        .then((result) => {
-            res.status(datadictionary.ok).redirect('/recruiters/login');
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    }
 }
 
 async function recruiterlogin(req, res, next) {
@@ -62,8 +67,7 @@ function recruiterHomePage(req,res){
         const user = req.user;
         return res.render('recruiterhome', { user, messages: req.flash() });
     } catch (err) {
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
@@ -73,8 +77,7 @@ function recruiterPostPage(req,res){
         return res.render('postjob',{user, messages: req.flash()});
     }
     catch(err){
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
@@ -94,8 +97,7 @@ async function recruiterPostaJob(req,res){
         return res.redirect('/recruiters/home');
     }
     catch(err){
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
@@ -107,8 +109,7 @@ async function recruiterMyJobs(req,res){
         return res.render('recruiterhome',{user, jobs, messages: req.flash()});
     }
     catch(err){
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
@@ -119,8 +120,7 @@ async function recruiterDeleteJob(req,res){
         return res.redirect('/recruiters/home');
     }
     catch(err){
-        console.error(err);
-        return res.status(datadictionary.internalServerError).send('Internal Server Error');
+        next(err);
     }
 }
 
@@ -172,6 +172,7 @@ async function checkNotAuthenticated(req, res, next) {
 
 
 module.exports = {
+    ifError,
     recruiterSignupPage,
     recruiterLoginPage,
     recruiterProfilePage,

@@ -4,17 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
+  <style>
+    .candidateForm {
+      display: none; 
+    }
+    .recruiterForm {
+      display: block; 
+    }
+    </style>
+
 </head>
 <body>
   <h1>Login Page</h1>
-  
-  <form action="/recruiters/login" method="POST">
+  <label for="userType">Login as Candidate</label>
+  <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
+  <form action="/recruiters/login" class="recruiterForm" method="POST">
+    <h1>Recruiter</h1>
     <label for="username">Email</label>
     <input type="text" id="email" name="email" placeholder="email" />
     <label for="password">Password</label>
     <input type="password" id="passwd" name="password" placeholder="password" />
     <button id="recruiterlogin">Login</button>
     <a href="/recruiters/signup">Dont' have an account,Register</a>
+  </form>
+
+  <form action="/candidates/login" class="candidateForm" method="POST">
+    <h1>Candidate</h1>
+    <label for="username">Email</label>
+    <input type="text" id="email" name="email" placeholder="email" />
+    <label for="password">Password</label>
+    <input type="password" id="passwd" name="password" placeholder="password" />
+    <button id="candidatelogin">Login</button>
+    <a href="/candidates/signup">Dont' have an account,Register</a>
+  </form>
     <% if (messages.error) { %>
       <script>
         alert('<%= messages.error %>');
@@ -26,5 +48,21 @@
     <% } %> 
 
   </form>
+  <script>
+    function toggleSignupForm() {
+      var userTypeCheckbox = document.getElementById("userType");
+      var recruiterForm = document.querySelector(".recruiterForm");
+      var candidateForm = document.querySelector(".candidateForm");
+      
+      if (userTypeCheckbox.checked) {
+        
+        recruiterForm.style.display = "none";
+        candidateForm.style.display = "block";
+      } else {
+        recruiterForm.style.display = "block";
+        candidateForm.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>

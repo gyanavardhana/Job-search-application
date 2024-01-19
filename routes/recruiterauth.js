@@ -19,6 +19,7 @@ router.use(flash());
 router.use(passport.initialize());
 router.use(passport.session());
 router.use(methodOveride('_method'));
+router.use(rController.ifError);
 
 
 
@@ -65,6 +66,8 @@ rController.recruiterDeleteJob);
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);
 
-
+router.get('/hi', (req,res)=>{
+    res.render('hell');
+})
 
 module.exports = router;

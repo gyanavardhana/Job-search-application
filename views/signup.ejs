@@ -4,10 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .candidateForm {
+      display: none; 
+    }
+    .recruiterForm {
+      display: block; 
+    }
+  </style>
 </head>
 <body>
   <h1>Sign up Page</h1>
-  <form action="/recruiters/signup" method="POST" onsubmit="return validateForm()">
+  <% if (messages.error) { %>
+    <script>
+      alert('<%= messages.error %>');
+    </script>
+  <% } %>
+
+  <label for="userType">Signup as Candidate</label>
+  <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
+
+  <form action="/recruiters/signup" method="POST" class="recruiterForm" onsubmit="return validateForm()">
     <label for="username">Username</label>
     <input type="text" name="username" placeholder="username" />
     <label for="email">Email</label>
@@ -22,17 +39,49 @@
     <input type="text" name="company" placeholder="company" />
     <button id="recruitersignup">Signup</button>
     <a href="/recruiters/login">Already have an account,Login</a>
-    <script>
-      function validateForm() {
-        let passwd = document.getElementById("password").value;
-        let confirmpasswd = document.getElementById("confirmPassword").value;
-        if (passwd !== confirmpasswd) {
-          alert("Password and Confirm Password do not match");
-          return false; 
-        }
-        return true; 
-      }
-    </script>
   </form>
+
+  <form action="/candidates/signup" method="POST" class="candidateForm" onsubmit="return validateForm()">
+    <label for="username">Username</label>
+    <input type="text" name="username" placeholder="username" />
+    <label for="email">Email</label>
+    <input type="email" name="email" placeholder="email" />
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="password" />
+    <label for="password">Confirm Password</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm password" required />
+    <label for="contact">Contact</label>
+    <input type="text" name="contact" placeholder="contact" />
+    <label for="organization">Organization</label>
+    <input type="text" name="organization" placeholder="organization" />
+    <button id="candidatesignup">Signup</button>
+    <a href="/candidates/login">Already have an account,Login</a>
+  </form>
+
+  <script>
+    function toggleSignupForm() {
+      var userTypeCheckbox = document.getElementById("userType");
+      var recruiterForm = document.querySelector(".recruiterForm");
+      var candidateForm = document.querySelector(".candidateForm");
+
+      if (userTypeCheckbox.checked) {
+        recruiterForm.style.display = "none";
+        candidateForm.style.display = "block";
+      } else {
+        recruiterForm.style.display = "block";
+        candidateForm.style.display = "none";
+      }
+    }
+
+    function validateForm() {
+      let passwd = document.getElementById("password").value;
+      let confirmpasswd = document.getElementById("confirmPassword").value;
+      if (passwd !== confirmpasswd) {
+        alert("Password and Confirm Password do not match");
+        return false; 
+      }
+      return true; 
+    }
+  </script>
 </body>
 </html>

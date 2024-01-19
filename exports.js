@@ -7,6 +7,8 @@ const datadictionary = {
     "notfound": 404,
     "conflict": 409,
     "internalerror": 500,
+    'mongoerror': 11000,
+    'userexists': "User already exists",
     "nouser": "User not found",
     "wrongpass": "Wrong Password",
     "success": "Login Successful",
