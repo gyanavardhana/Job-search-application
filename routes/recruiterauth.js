@@ -66,8 +66,4 @@ rController.recruiterDeleteJob);
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);
 
-router.get('/hi', (req,res)=>{
-    res.render('hell');
-})
-
 module.exports = router;
