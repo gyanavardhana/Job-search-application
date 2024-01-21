@@ -6,7 +6,7 @@ const passport = require('passport');
 const initializePassport = require('../passport-config');
 
 
-initializePassport(passport, getuserbyemail, getuserbyid);
+initializePassport(passport, rgetuserbyemail, rgetuserbyid, 'recruiter');
 
 function ifError(err, req, res, next){
     console.error(err);
@@ -39,6 +39,7 @@ async function recruitersignup(req, res) {
             username: req.body.username,
             email: req.body.email,
             password: await bcrypt.hash(req.body.password, 10),
+            contact: req.body.contact,
             company: req.body.company
         });
 
@@ -135,7 +136,7 @@ async function recruiterlogout(req, res) {
 
 }
 
-async function getuserbyemail(email) {
+async function rgetuserbyemail(email) {
     try {
         const user = await Recruiter.findOne({ email: email });
         return user;
@@ -144,7 +145,7 @@ async function getuserbyemail(email) {
     }
 }
 
-async function getuserbyid(id) {
+async function rgetuserbyid(id) {
     try {
         const user = await Recruiter.findById(id);
         return user;
@@ -154,15 +155,19 @@ async function getuserbyid(id) {
 }
 
 
-async function checkAuthenticated(req, res, next) {
+async function recruiterCheckAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/recruiters/login');
+    else{
+        console.log('not authenticated');
+        res.redirect('/recruiters/login');
+    }
+    
 }
 
 
-async function checkNotAuthenticated(req, res, next) {
+async function recruiterCheckNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect('/recruiters/profile');
     }
@@ -184,8 +189,6 @@ module.exports = {
     recruiterMyJobs,
     recruiterDeleteJob,
     recruiterlogout,
-    getuserbyemail,
-    getuserbyid,
-    checkAuthenticated,
-    checkNotAuthenticated,
+    recruiterCheckNotAuthenticated,
+    recruiterCheckAuthenticated
 }

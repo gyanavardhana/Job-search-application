@@ -24,43 +24,43 @@ router.use(rController.ifError);
 
 
 router.get('/recruiters/signup', 
-rController.checkNotAuthenticated,
+rController.recruiterCheckNotAuthenticated,
 rController.recruiterSignupPage);
 
 router.get('/recruiters/login', 
-rController.checkNotAuthenticated, 
+rController.recruiterCheckNotAuthenticated, 
 rController.recruiterLoginPage);
 
 router.get('/recruiters/profile', 
-rController.checkAuthenticated, 
+rController.recruiterCheckAuthenticated, 
 rController.recruiterProfilePage);
 
 router.post('/recruiters/signup', 
 rController.recruitersignup);
 
 router.post('/recruiters/login',
-rController.checkNotAuthenticated,
+rController.recruiterCheckNotAuthenticated,
 rController.recruiterlogin);
 
 router.get('/recruiters/home',
-rController.checkAuthenticated,
+rController.recruiterCheckAuthenticated,
 rController.recruiterMyJobs,
 rController.recruiterHomePage);
 
 router.get('/recruiters/postjobs',
-rController.checkAuthenticated,
+rController.recruiterCheckAuthenticated,
 rController.recruiterPostPage);
 
 router.post('/recruiters/postajob',
-rController.checkAuthenticated,
+rController.recruiterCheckAuthenticated,
 rController.recruiterPostaJob);
 
 router.get('/recruiters/myjobs',
-rController.checkAuthenticated,
+rController.recruiterCheckAuthenticated,
 rController.recruiterMyJobs);
 
 router.delete('/recruiters/myjobs/:id',
-rController.checkAuthenticated,
+rController.recruiterCheckAuthenticated,
 rController.recruiterDeleteJob);
 
 router.delete('/recruiters/logout', 
