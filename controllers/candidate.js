@@ -3,6 +3,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const datadictionary = require('../exports');
 
+
+async function candidateProfile(req, res) {
+    const user = await Candidate.findById(req.user.id);
+    return res.render('candidateprofile' , { user: user });
+}
+
+
 async function candidateSignup(req, res) {
     try {
         const candidate = new Candidate({
@@ -32,23 +39,29 @@ async function createToken(id) {
 async function checkAuthenticated(req,res,next) {
     const token = req.cookies.jwt;
     if (!token) {
-        return res.redirect('/candidates/login');
+        return res.redirect('/recruiters/login');
     }
     try {
-        const decoded = jwt.verify(token, 'sahfhasfhakshfkdhfa');
-        req.user = decoded;
+        const user1 = jwt.verify(token, 'sahfhasfhakshfkdhfa');
+        req.user = user1;
         next();
     } catch (error) {
-        next(err);
+        res.redirect('/recruiters/login');
     }
 }
 
 async function checkNotAuthenticated(req, res, next) {
     const token = req.cookies.jwt;
     if (token) {
-        next();
-    }else{
-        res.redirect('/recruiters/login');
+        try {
+            const user1 = jwt.verify(token, 'sahfhasfhakshfkdhfa');
+            req.user = user1;
+            return res.redirect('/candidates/profile');
+        } catch (error) {
+            next();
+        }
+    } else {
+        next(); 
     }
 
 }
@@ -72,21 +85,24 @@ async function candidateLogin(req, res, next) {
             }
         } else {
             req.flash('error', datadictionary.nouser);
-            res.redirect('/recruiters/login');
+            res.redirect('/recruiters/signup');
         }
     } catch (err) {
         next(err);
     }
 }
 
-function candidateProfile(req, res) {
-    return res.render('candidateprofile');
+async function candidateLogout(req, res) {
+    res.cookie('jwt', '', { maxAge: 1 });
+    return res.redirect('/recruiters/login');
 }
+
 
 module.exports = {
     candidateSignup,
     candidateLogin,
     candidateProfile,
     checkAuthenticated,
-    checkNotAuthenticated
+    checkNotAuthenticated,
+    candidateLogout
 }

@@ -2,9 +2,11 @@ const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
 const methodOveride = require('method-override');
+const cookieParser = require('cookie-parser');
 const router = express.Router();
 const passport = require('passport');
 const rController = require('../controllers/recruiter');
+const cController = require('../controllers/candidate');
 
 
 
@@ -19,16 +21,19 @@ router.use(flash());
 router.use(passport.initialize());
 router.use(passport.session());
 router.use(methodOveride('_method'));
+router.use(cookieParser());
 router.use(rController.ifError);
 
 
 
 router.get('/recruiters/signup', 
 rController.checkNotAuthenticated,
+cController.checkNotAuthenticated,
 rController.recruiterSignupPage);
 
 router.get('/recruiters/login', 
 rController.checkNotAuthenticated, 
+cController.checkNotAuthenticated,
 rController.recruiterLoginPage);
 
 router.get('/recruiters/profile', 
