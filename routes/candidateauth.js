@@ -23,6 +23,10 @@ router.get('/candidates/profile',
  cController.checkAuthenticated,
  cController.candidateProfile);
 
+router.get('/candidates/apply',
+ cController.checkAuthenticated,
+ cController.candidateApplyPage);
+
 router.post('/candidates/signup', 
 cController.candidateSignup);
 

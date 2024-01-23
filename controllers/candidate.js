@@ -1,4 +1,5 @@
 const Candidate = require('../Models/candidatemodel');
+const Job = require('../Models/jobsmodel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const datadictionary = require('../exports');
@@ -98,11 +99,17 @@ async function candidateLogout(req, res) {
 }
 
 
+async function candidateApplyPage(req, res){
+    const jobs = await Job.find();
+    res.render('candidatejobs', { jobs: jobs });
+}
+
 module.exports = {
     candidateSignup,
     candidateLogin,
     candidateProfile,
     checkAuthenticated,
     checkNotAuthenticated,
-    candidateLogout
+    candidateLogout,
+    candidateApplyPage
 }
