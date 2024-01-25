@@ -12,6 +12,10 @@ const datadictionary = {
     "nouser": "User not found",
     "wrongpass": "Wrong Password",
     "success": "Login Successful",
+    "applieddone": "Job already APPLIED",
+    "applysuccess": "Job APPLIED Successfully",
+    "withdrawsuccess": "Job WITHDRAWN Successfully",
+    "notapplied": "Job not APPLIED",
 }
 
 module.exports = datadictionary;

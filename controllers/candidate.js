@@ -7,7 +7,7 @@ const datadictionary = require('../exports');
 
 async function candidateProfile(req, res) {
     const user = await Candidate.findById(req.user.id);
-    return res.render('candidateprofile' , { user: user });
+    return res.render('candidateprofile', { user: user });
 }
 
 
@@ -37,7 +37,7 @@ async function createToken(id) {
     return token;
 }
 
-async function checkAuthenticated(req,res,next) {
+async function checkAuthenticated(req, res, next) {
     const token = req.cookies.jwt;
     if (!token) {
         return res.redirect('/recruiters/login');
@@ -62,7 +62,7 @@ async function checkNotAuthenticated(req, res, next) {
             next();
         }
     } else {
-        next(); 
+        next();
     }
 
 }
@@ -70,7 +70,7 @@ async function checkNotAuthenticated(req, res, next) {
 async function candidateLogin(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(email,password)
+    console.log(email, password)
     try {
         const user = await Candidate.findOne({ email: email });
         console.log(user);
@@ -78,7 +78,7 @@ async function candidateLogin(req, res, next) {
             const auth = await bcrypt.compare(password, user.password);
             if (auth) {
                 const token = await createToken(user._id);
-                res.cookie('jwt', token, { maxAge: 1000*60*60*24*3 });
+                res.cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24 * 3 });
                 res.status(datadictionary.ok).redirect('/candidates/profile');
             } else {
                 req.flash('error', datadictionary.invalidlogin);
@@ -99,10 +99,52 @@ async function candidateLogout(req, res) {
 }
 
 
-async function candidateApplyPage(req, res){
+async function candidateApplyPage(req, res) {
+
     const jobs = await Job.find();
-    res.render('candidatejobs', { jobs: jobs });
+    res.render('candidatejobs', { jobs: jobs , messages: req.flash()});
 }
+
+async function candidateApply(req, res, next) {
+    try {
+        const id = req.params.id;
+        const job = await Job.findById(id);
+        if (job.candidates.includes(req.user.id)) {
+            req.flash('error', datadictionary.applieddone);
+            const jobs = await Job.find();
+            return res.render('candidatejobs', { jobs: jobs, messages: req.flash() });
+        } else {
+            const updateJob = await Job.findByIdAndUpdate(id, { $push: { candidates: req.user.id } });
+            const updateUser = await Candidate.findByIdAndUpdate(req.user.id, { $push: { appliedjobs: id } });
+            req.flash('success', datadictionary.applysuccess);
+            const jobs = await Job.find();
+            return res.render('candidatejobs', { jobs: jobs, messages: req.flash() });
+        }
+    } catch(err) {
+        next(err);
+    }
+}
+
+async function candidateWithDraw(req,res,next){
+    try {
+        const id = req.params.id;
+        const job = await Job.findById(id);
+        if (job.candidates.includes(req.user.id)) {
+            const updateJob = await Job.findByIdAndUpdate(id, { $pull: { candidates: req.user.id } });
+            const updateUser = await Candidate.findByIdAndUpdate(req.user.id, { $pull: { appliedjobs: id } });
+            req.flash('success', datadictionary.withdrawsuccess);
+            const jobs = await Job.find();
+            return res.render('candidatejobs', { jobs: jobs, messages: req.flash() });
+        } else {
+            req.flash('error', datadictionary.notapplied);
+            const jobs = await Job.find();
+            return res.render('candidatejobs', { jobs: jobs, messages: req.flash() });
+        }
+    } catch(err) {
+        next(err);
+    }
+}
+
 
 module.exports = {
     candidateSignup,
@@ -111,5 +153,7 @@ module.exports = {
     checkAuthenticated,
     checkNotAuthenticated,
     candidateLogout,
-    candidateApplyPage
+    candidateApplyPage,
+    candidateApply,
+    candidateWithDraw
 }

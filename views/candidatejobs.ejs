@@ -6,6 +6,19 @@
     <title>Document</title>
   </head>
   <body>
+    <% if (messages.error) { %>
+      <script>
+        alert('<%= messages.error %>');
+      </script>
+      <% messages.error = null; %> 
+    <% } else if (messages.success) { %>
+      <script>
+        alert('<%= messages.success %>');
+      </script>
+      <% messages.success = null %> 
+    <% } %> 
+
+    
 
     <h1>Candidate Jobs page</h1>
     <form action="/candidates/profile?_method=GET" method="post">
@@ -21,13 +34,13 @@
           <p><%= job.location %></p>
           <p><%= job.salary %></p>
           <form
-            action="/candidates/apply/<%= job._id %>?_method=POST"
+            action="/candidates/apply/<%= job._id %>?_method=PATCH"
             method="post"
           >
             <button>Apply</button>
           </form>
           <form
-            action="/candidates/apply/<%= job._id %>?_method=DELETE"
+            action="/candidates/withdraw/<%= job._id %>?_method=DELETE"
             method="post"
           >
             <button>withdraw</button>

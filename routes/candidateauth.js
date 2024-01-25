@@ -36,5 +36,14 @@ cController.candidateLogin);
 router.delete('/candidates/logout',
 cController.candidateLogout);
 
+router.patch('/candidates/apply/:id',
+cController.checkAuthenticated,
+cController.candidateApply);
+
+router.delete('/candidates/withdraw/:id',
+cController.checkAuthenticated,
+cController.candidateWithDraw);
+
+
 module.exports = router;
 

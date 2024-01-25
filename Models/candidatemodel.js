@@ -10,7 +10,7 @@ const candidateSchema = new mongoose.Schema({
     education: String,
     appliedjobs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Job'
+        ref: 'Job',
     }],
 });
 

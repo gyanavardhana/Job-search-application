@@ -81,7 +81,7 @@ function recruiterPostPage(req,res){
     }
 }
 
-async function recruiterPostaJob(req,res){
+async function recruiterPostaJob(req,res,next){
     try{
         const user = req.user;
         const job = new Job({
