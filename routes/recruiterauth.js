@@ -25,7 +25,7 @@ router.use(cookieParser());
 router.use(rController.ifError);
 
 
-
+ 
 router.get('/recruiters/signup', 
 rController.checkNotAuthenticated,
 cController.checkNotAuthenticated,
