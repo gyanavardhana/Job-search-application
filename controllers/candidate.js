@@ -129,6 +129,7 @@ async function candidateWithDraw(req,res,next){
     try {
         const id = req.params.id;
         const job = await Job.findById(id);
+        console.log(job.Date);
         if (job.candidates.includes(req.user.id)) {
             const updateJob = await Job.findByIdAndUpdate(id, { $pull: { candidates: req.user.id } });
             const updateUser = await Candidate.findByIdAndUpdate(req.user.id, { $pull: { appliedjobs: id } });

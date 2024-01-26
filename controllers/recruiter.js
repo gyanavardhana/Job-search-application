@@ -3,8 +3,25 @@ const Job = require('../Models/jobsmodel');
 const bcrypt = require('bcrypt');
 const datadictionary = require('../exports');
 const passport = require('passport');
+const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
 const initializePassport = require('../passport-config');
+const path = require('path');
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const dir = path.join(__dirname, '..', 'uploads');
+        cb(null, dir);
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now();
+      cb(null,  uniqueSuffix + '-' + file.originalname);
+    }
+});
+
+
+  
+const upload = multer({ storage: storage })
 
 initializePassport(passport, getuserbyemail, getuserbyid);
 
@@ -188,4 +205,5 @@ module.exports = {
     getuserbyid,
     checkAuthenticated,
     checkNotAuthenticated,
+    upload
 }

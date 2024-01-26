@@ -57,6 +57,7 @@ rController.checkAuthenticated,
 rController.recruiterPostPage);
 
 router.post('/recruiters/postajob',
+rController.upload.single('jobdescription'),
 rController.checkAuthenticated,
 rController.recruiterPostaJob);
 
