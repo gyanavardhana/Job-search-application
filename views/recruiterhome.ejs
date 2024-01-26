@@ -21,6 +21,9 @@
         <p><%= job.description %></p>
         <p><%= job.location %></p>
         <p><%= job.salary %></p>
+        <form  action="/recruiters/view/<%= job.file %>?_method=GET" method="post" target="_blank">
+          <button>More Info</button>
+        </form>
         <form action="/recruiters/myjobs/<%= job._id %>?_method=DELETE" method="post">
           <button>Delete</button>
         </form>

@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>\
+<body>
+    <% if (messages.error) { %>
+        <script>
+          alert('<%= messages.error %>');
+        </script>
+      <% } else if (messages.success) { %>
+        <script>
+          alert('<%= messages.success %>');
+        </script>
+      <% } %> 
     <h1><%= user.company %></h1>
     <h1>Post a job</h1>
     <form action="/recruiters/postajob" method="post" enctype="multipart/form-data">

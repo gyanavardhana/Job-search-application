@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 const datadictionary = require('../exports');
 const passport = require('passport');
 const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
 const initializePassport = require('../passport-config');
 const path = require('path');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -98,9 +98,13 @@ function recruiterPostPage(req,res){
     }
 }
 
-async function recruiterPostaJob(req,res,next){
-    try{
+async function recruiterPostaJob(req, res, next) {
+    try {
         const user = req.user;
+        if (!req.file) {
+            req.flash('error', 'Please upload a file');
+            return res.render('postjob', { user, messages: req.flash() });
+        }
         const job = new Job({
             title: req.body.title,
             salary: req.body.salary,
@@ -108,15 +112,16 @@ async function recruiterPostaJob(req,res,next){
             company: req.body.company,
             description: req.body.description,
             recruiter: user._id,
-            candidates: []
+            candidates: [],
+            file: req.file.filename 
         });
         await job.save();
         return res.redirect('/recruiters/home');
-    }
-    catch(err){
+    } catch (err) {
         next(err);
     }
 }
+
 
 
 async function recruiterMyJobs(req,res){
@@ -133,6 +138,13 @@ async function recruiterMyJobs(req,res){
 async function recruiterDeleteJob(req,res){
     try{
         const id = req.params.id;
+        const job = await Job.findById(id);
+        const filePath = path.join(__dirname, '..', 'uploads', job.file);
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+        });
         await Job.findByIdAndDelete(id);
         return res.redirect('/recruiters/home');
     }
@@ -186,6 +198,19 @@ async function checkNotAuthenticated(req, res, next) {
     next();
 }
 
+async function getFile(req, res) {
+    const directory = path.join(__dirname, '..', 'uploads'); 
+    const filePath = path.join(directory, req.params.file);
+    res.sendFile(filePath);
+}
+
+
+async function viewFile(req,res){
+    res.render('pdf-viewer', { file: req.params.file });
+};
+
+
+
 
 
 module.exports = {
@@ -205,5 +230,7 @@ module.exports = {
     getuserbyid,
     checkAuthenticated,
     checkNotAuthenticated,
-    upload
+    upload,
+    getFile,
+    viewFile
 }

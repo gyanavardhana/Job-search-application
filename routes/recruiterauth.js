@@ -72,4 +72,7 @@ rController.recruiterDeleteJob);
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);
 
+
+router.get('/recruiters/view/:file',  rController.getFile, rController.viewFile);
+
 module.exports = router;
