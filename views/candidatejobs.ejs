@@ -24,6 +24,9 @@
     <form action="/candidates/profile?_method=GET" method="post">
         <button>Profile</button>
     </form>
+    <form action="/candidates/appliedjobs?_method=GET" method="post">
+      <button>Applied Jobs</button>
+  </form>
     <% if (jobs && jobs.length > 0) { %>
     <ul>
       <% jobs.forEach(job => { %>

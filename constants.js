@@ -1,4 +1,4 @@
-const datadictionary = {
+const cons = {
     "ok": 200,
     "created": 201,
     "badrequest": 400,
@@ -18,4 +18,4 @@ const datadictionary = {
     "notapplied": "Job not APPLIED",
 }
 
-module.exports = datadictionary;
+module.exports = cons;

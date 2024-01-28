@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -10,7 +11,7 @@ const cookieParser = require('cookie-parser');
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 router.use(session({
-    secret: 'dfgadgafsgvsgasfavsfbagav',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -26,6 +27,10 @@ router.get('/candidates/profile',
 router.get('/candidates/apply',
  cController.checkAuthenticated,
  cController.candidateApplyPage);
+
+router.get('/candidates/appliedjobs',
+cController.checkAuthenticated,
+cController.candidateAppliedJobsPage);
 
 router.post('/candidates/signup', 
 cController.candidateSignup);

@@ -1,12 +1,15 @@
+require('dotenv').config();
 const Recruiter = require('../Models/recruitermodel');
 const Job = require('../Models/jobsmodel');
+const fs = require('fs');
 const bcrypt = require('bcrypt');
-const datadictionary = require('../exports');
+const cons = require('../constants');
 const passport = require('passport');
+const path = require('path');
 const multer = require('multer');
 const initializePassport = require('../passport-config');
-const path = require('path');
-const fs = require('fs');
+
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,7 +30,7 @@ initializePassport(passport, getuserbyemail, getuserbyid);
 
 function ifError(err, req, res, next){
     console.error(err);
-    res.status(datadictionary.internalServerError).send('Internal Server Error');
+    res.status(cons.internalServerError).send('Internal Server Error');
 }
 
 function recruiterSignupPage(req,res){
@@ -53,17 +56,17 @@ function recruiterProfilePage(req,res){
 async function recruitersignup(req, res) {
     try {
         const recruiter = new Recruiter({
-            username: req.body.username,
-            email: req.body.email,
-            password: await bcrypt.hash(req.body.password, 10),
-            company: req.body.company
+            username: req.body?.username,
+            email: req.body?.email,
+            password: await bcrypt.hash(req.body?.password, 10),
+            company: req.body?.company
         });
 
         await recruiter.save();
-        res.status(datadictionary.ok).redirect('/recruiters/login');
+        res.status(cons.ok).redirect('/recruiters/login');
     } catch (err) {
-        if (err.code === datadictionary.mongoerror) {
-            req.flash('error', datadictionary.userexists);
+        if (err.code === cons.mongoerror) {
+            req.flash('error', cons.userexists);
             res.render('signup', { messages: req.flash() });
         } else {
             next(err);
@@ -106,14 +109,14 @@ async function recruiterPostaJob(req, res, next) {
             return res.render('postjob', { user, messages: req.flash() });
         }
         const job = new Job({
-            title: req.body.title,
-            salary: req.body.salary,
-            location: req.body.location,
-            company: req.body.company,
-            description: req.body.description,
-            recruiter: user._id,
+            title: req.body?.title,
+            salary: req.body?.salary,
+            location: req.body?.location,
+            company: req.body?.company,
+            description: req.body?.description,
+            recruiter: user?._id,
             candidates: [],
-            file: req.file.filename 
+            file: req.file?.filename 
         });
         await job.save();
         return res.redirect('/recruiters/home');
@@ -127,7 +130,7 @@ async function recruiterPostaJob(req, res, next) {
 async function recruiterMyJobs(req,res){
     try{
         const user = req.user;
-        const jobs = await Job.find({recruiter: user._id});
+        const jobs = await Job.find({recruiter: user?._id});
         return res.render('recruiterhome',{user, jobs, messages: req.flash()});
     }
     catch(err){
@@ -137,9 +140,9 @@ async function recruiterMyJobs(req,res){
 
 async function recruiterDeleteJob(req,res){
     try{
-        const id = req.params.id;
+        const id = req.params?.id;
         const job = await Job.findById(id);
-        const filePath = path.join(__dirname, '..', 'uploads', job.file);
+        const filePath = path.join(__dirname, '..', 'uploads', job?.file);
         fs.unlink(filePath, (err) => {
             if (err) {
                 console.error('Error deleting file:', err);
@@ -200,13 +203,13 @@ async function checkNotAuthenticated(req, res, next) {
 
 async function getFile(req, res) {
     const directory = path.join(__dirname, '..', 'uploads'); 
-    const filePath = path.join(directory, req.params.file);
+    const filePath = path.join(directory, req.params?.file);
     res.sendFile(filePath);
 }
 
 
 async function viewFile(req,res){
-    res.render('pdf-viewer', { file: req.params.file });
+    res.render('pdf-viewer', { file: req.params?.file });
 };
 
 

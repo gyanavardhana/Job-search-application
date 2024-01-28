@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -13,7 +14,7 @@ const cController = require('../controllers/candidate');
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 router.use(session({
-    secret: 'dfgadgafsgvsgasfavsfbagav',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -72,7 +73,8 @@ rController.recruiterDeleteJob);
 router.delete('/recruiters/logout', 
 rController.recruiterlogout);
 
-
-router.get('/recruiters/view/:file',  rController.getFile, rController.viewFile);
+router.get('/recruiters/view/:file', 
+rController.getFile,
+rController.viewFile);
 
 module.exports = router;
