@@ -5,49 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <style>
-    .candidateForm {
+     .candidateForm {
       display: none; 
     }
     .recruiterForm {
       display: block; 
     }
-    </style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
 
+    h1 {
+      text-align: center;
+    }
+
+    .login {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .decision {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .decision label {
+      margin-right: 10px;
+    }
+
+    .login form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .login form input[type="text"],
+    .login form input[type="email"],
+    .login form input[type="password"] {
+      width: calc(100% - 12px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .login form button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .login form button:hover {
+      background-color: #0056b3;
+    }
+
+    .login form a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .login form a:hover {
+      text-decoration: underline;
+    }
+
+   
+  </style>
 </head>
 <body>
   <h1>Login Page</h1>
-  <label for="userType">Login as Candidate</label>
-  <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
-  <form action="/recruiters/login" class="recruiterForm" method="POST">
-    <h1>Recruiter</h1>
-    <label for="username">Email</label>
-    <input type="text" id="email" name="email" placeholder="email" />
-    <label for="password">Password</label>
-    <input type="password" id="passwd" name="password" placeholder="password" />
-    <button id="recruiterlogin">Login</button>
-    <a href="/recruiters/signup">Dont' have an account,Register</a>
-  </form>
+  <div class="login">
+    <div class="decision">
+      <label for="userType">Login as Candidate</label>
+      <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
+    </div>
 
-  <form action="/candidates/login" class="candidateForm" method="POST">
-    <h1>Candidate</h1>
-    <label for="username">Email</label>
-    <input type="text" id="email" name="email" placeholder="email" />
-    <label for="password">Password</label>
-    <input type="password" id="passwd" name="password" placeholder="password" />
-    <button id="candidatelogin">Login</button>
-    <a href="/recruiters/signup">Dont' have an account,Register</a>
-  </form>
-    <% if (messages.error) { %>
-      <script>
-        alert('<%= messages.error %>');
-      </script>
-    <% } else if (messages.success) { %>
-      <script>
-        alert('<%= messages.success %>');
-      </script>
-    <% } %> 
+    <form action="/recruiters/login" class="recruiterForm" method="POST">
+      <h1>Recruiter</h1>
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" placeholder="Email" />
+      <label for="password">Password</label>
+      <input type="password" id="passwd" name="password" placeholder="Password" />
+      <button id="recruiterlogin">Login</button>
+      <a href="/recruiters/signup">Don't have an account? Register</a>
+    </form>
 
-  </form>
+    <form action="/candidates/login" class="candidateForm" method="POST">
+      <h1>Candidate</h1>
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" placeholder="Email" />
+      <label for="password">Password</label>
+      <input type="password" id="passwd" name="password" placeholder="Password" />
+      <button id="candidatelogin">Login</button>
+      <a href="/recruiters/signup">Don't have an account? Register</a>
+    </form>
+  </div>
+
   <script>
     function toggleSignupForm() {
       var userTypeCheckbox = document.getElementById("userType");
@@ -55,7 +123,6 @@
       var candidateForm = document.querySelector(".candidateForm");
       
       if (userTypeCheckbox.checked) {
-        
         recruiterForm.style.display = "none";
         candidateForm.style.display = "block";
       } else {

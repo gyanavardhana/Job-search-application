@@ -1,18 +1,78 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .profile-container {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-details p {
+            margin: 5px 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .button-container form {
+            margin-right: 10px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  
-  <h2>Welcome <%= user.username %> from <%= user.company %></h2>
   <h1>Recruiters Profile Page</h1>
-  <form action="/recruiters/home?_method=GET" method="post" >
-    <button>Home Page</button>
-  </form>
-  <form action="/recruiters/logout?_method=DELETE" method="post" >
-      <button>Logout</button>
-  </form>
+    <div class="profile-container">
+        <h2>Welcome <%= user.username %> from <%= user.company %></h2>
+        <div class="profile-details">
+            <p><strong>Username:</strong> <%= user.username %></p>
+            <p><strong>Company:</strong> <%= user.company %></p>
+        </div>
+        
+        <div class="button-container">
+            <form action="/recruiters/home?_method=GET" method="post">
+                <button>Home Page</button>
+            </form>
+            <form action="/recruiters/logout?_method=DELETE" method="post">
+                <button>Logout</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
