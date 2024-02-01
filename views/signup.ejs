@@ -4,180 +4,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign up Page</title>
-    <style>
-      .candidateForm {
-        display: none;
-      }
-      .recruiterForm {
-        display: block;
-      }
-
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f0f0;
-      }
-
-      h1 {
-        text-align: center;
-      }
-
-      .signup {
-        max-width: 400px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .decision {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-
-      .decision label {
-        margin-right: 10px;
-      }
-
-      .signup form label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      .signup form input[type="text"],
-      .signup form input[type="email"],
-      .signup form input[type="password"] {
-        width: calc(100% - 12px);
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-      }
-
-      .signup form button {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-        border-radius: 3px;
-      }
-
-      .signup form button:hover {
-        background-color: #0056b3;
-      }
-
-      .signup form a {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-        color: #007bff;
-        text-decoration: none;
-      }
-
-      .signup form a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <link href="../src/output.css" rel="stylesheet">
   </head>
-  <body>
-    <h1>Sign up Page</h1>
-    <div class="signup">
-      <div class="decision">
-        <label for="userType">Signup as Candidate</label>
-        <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
+  <body class="bg-gray-100">
+    <% if (messages.error) { %>
+      <script>
+        alert('<%= messages.error %>');
+      </script>
+    <% } else if (messages.success) { %>
+      <script>
+        alert('<%= messages.success %>');
+      </script>
+    <% } %> 
+    <h1 class="text-3xl font-bold text-center mt-8">Sign up Page</h1>
+    <div class="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow-lg">
+      <div class="mb-4">
+        <label for="userType" class="block">Signup as Candidate</label>
+        <input type="checkbox" id="userType" onchange="toggleSignupForm()" class="mt-2">
       </div>
-
-      <form
-        action="/recruiters/signup"
-        method="POST"
-        class="recruiterForm"
-        onsubmit="return validateForm()"
-      >
-        <label for="username">Username</label>
-        <input type="text" name="username" placeholder="Username" required />
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email" required />
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          required
-        />
-        <label for="contact">Contact</label>
-        <input type="text" name="contact" placeholder="Contact" />
-        <label for="company">Company</label>
-        <input type="text" name="company" placeholder="Company" />
-        <button type="submit">Signup</button>
-        <a href="/recruiters/login">Already have an account? Login</a>
+  
+      <form action="/recruiters/signup" method="POST" class="recruiterForm" onsubmit="return validateForm()">
+        <label for="username" class="block">Username</label>
+        <input type="text" name="username" placeholder="Username" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <!-- Add Tailwind CSS classes to the input fields -->
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" placeholder="Email" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="password" class="block">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="confirmPassword" class="block">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="contact" class="block">Contact</label>
+        <input type="text" name="contact" placeholder="Contact" class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="company" class="block">Company</label>
+        <input type="text" name="company" placeholder="Company" class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Signup</button>
+        <a href="/recruiters/login" class="block mt-2 text-blue-500">Already have an account? Login</a>
       </form>
-
-      <form
-        action="/candidates/signup"
-        method="POST"
-        class="candidateForm"
-        onsubmit="return validateForm()"
-      >
-        <label for="username">Username</label>
-        <input type="text" name="username" placeholder="Username" required />
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email" required />
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          required
-        />
-        <label for="contact">Contact</label>
-        <input type="text" name="contact" placeholder="Contact" />
-        <label for="organization">Organization</label>
-        <input type="text" name="organization" placeholder="Organization" />
-        <button type="submit">Signup</button>
-        <a href="/recruiters/login">Already have an account? Login</a>
+  
+      <form action="/candidates/signup" method="POST" class="candidateForm hidden" onsubmit="return validateForm()">
+        <label for="username" class="block">Username</label>
+        <input type="text" name="username" placeholder="Username" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" placeholder="Email" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="password" class="block">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="confirmPassword" class="block">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="contact" class="block">Contact</label>
+        <input type="text" name="contact" placeholder="Contact" class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="organization" class="block">Organization</label>
+        <input type="text" name="organization" placeholder="Organization" class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Signup</button>
+        <a href="/recruiters/login" class="block mt-2 text-blue-500">Already have an account? Login</a>
       </form>
     </div>
-
+  
     <script>
       function toggleSignupForm() {
         var userTypeCheckbox = document.getElementById("userType");
         var recruiterForm = document.querySelector(".recruiterForm");
         var candidateForm = document.querySelector(".candidateForm");
-
+        
         if (userTypeCheckbox.checked) {
-          recruiterForm.style.display = "none";
-          candidateForm.style.display = "block";
+          recruiterForm.classList.add("hidden");
+          candidateForm.classList.remove("hidden");
         } else {
-          recruiterForm.style.display = "block";
-          candidateForm.style.display = "none";
+          recruiterForm.classList.remove("hidden");
+          candidateForm.classList.add("hidden");
         }
       }
-
+  
       function validateForm() {
         let passwd = document.getElementById("password").value;
         let confirmpasswd = document.getElementById("confirmPassword").value;

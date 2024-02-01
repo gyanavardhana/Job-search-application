@@ -10,9 +10,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <link href="../src/output.css" rel="stylesheet">
   </head>
-  <body>
-    <canvas id="pdf-container"></canvas>
+  <body class="bg-gray-100 flex justify-center items-center h-screen">
+    <canvas id="pdf-container" class="bg-white shadow-lg"></canvas>
 
     <script>
       pdfjsLib.getDocument("/public/<%= file %>").promise.then(function (pdf) {

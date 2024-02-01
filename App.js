@@ -14,6 +14,9 @@ app.use(candidateroutes);
 
 
 
+app.get('/src/output.css', (req, res) => {
+    res.sendFile(__dirname + '/src/output.css');
+});
 // all routes
 
 
