@@ -109,7 +109,24 @@ Job Search Platform is a web application designed to help users find their dream
         |-- tailwind.config.js
 
 
-        
+# Features:
+- ### Home Page:
+- ### Signup as Recruiter & Candidate:
+- ### Login as Recruiter & Candidate:
+- ### Contact Page for Queries or Feature Requests:
+- ### Recruiter Profile page:
+- ### Recruiter JobPosting page:
+- ### Recruiter Jobs page:
+- ### Recruiter Jobs MoreInfo page:
+- ### Candidate Profile page:
+- ### Candidate Applyjob page:
+- ### Candidate Applied jobs page:
+- ### Logout Feature for Recruiter & Candidate:
+
+
+
+
+  
 # Project Info:
 
 - Codebase: https://github.com/gyanavardhana/Job-search-application.git
