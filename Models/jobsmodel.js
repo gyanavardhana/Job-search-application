@@ -12,12 +12,13 @@ const jobSchema = new mongoose.Schema({
     description: String,
     recruiter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Recruiter'
+        ref: 'Recruiter',
     },
     candidates: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Candidate'
+        ref: 'Candidate',
     }],
+    file: String,
 });
 
 const Job = mongoose.model('Job', jobSchema);

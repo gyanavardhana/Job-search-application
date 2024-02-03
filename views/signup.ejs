@@ -1,87 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    .candidateForm {
-      display: none; 
-    }
-    .recruiterForm {
-      display: block; 
-    }
-  </style>
-</head>
-<body>
-  <h1>Sign up Page</h1>
-  <% if (messages.error) { %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up Page</title>
+    <link href="/output.css" rel="stylesheet">
+  </head>
+  <body class="bg-gray-100 bg-cover" style="background-image: url('/log.png'); background-size: cover; background-position: center;"></body>
+    <% if (messages.error) { %>
+      <script>
+        alert('<%= messages.error %>');
+      </script>
+    <% } else if (messages.success) { %>
+      <script>
+        alert('<%= messages.success %>');
+      </script>
+    <% } %> 
+    <h1 class="text-3xl font-bold text-center mt-8">Sign up Page</h1>
+    <div class="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow-lg">
+      <div class="mb-4">
+        <label for="userType" class="block">Signup as Candidate</label>
+        <input type="checkbox" id="userType" onchange="toggleSignupForm()" class="mt-2">
+      </div>
+  
+      <form action="/recruiters/signup" method="POST" class="recruiterForm" onsubmit="return validateForm()">
+        <label for="username" class="block">Username</label>
+        <input type="text" name="username" placeholder="Username" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <!-- Add Tailwind CSS classes to the input fields -->
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" placeholder="Email" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="password" class="block">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="confirmPassword" class="block">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="contact" class="block">Contact</label>
+        <input type="text" name="contact" placeholder="Contact" required class="w-full  border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="company" class="block">Company</label>
+        <input type="text" name="company" placeholder="Company" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Signup</button>
+        <a href="/recruiters/login" class="block mt-2 text-blue-500">Already have an account? Login</a>
+      </form>
+  
+      <form action="/candidates/signup" method="POST" class="candidateForm hidden" onsubmit="return validateForm()">
+        <label for="username" class="block">Username</label>
+        <input type="text" name="username" placeholder="Username" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" placeholder="Email" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="password" class="block">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="confirmPassword" class="block">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="contact" class="block">Contact</label>
+        <input type="text" name="contact" placeholder="Contact" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <label for="organization" class="block">Organization</label>
+        <input type="text" name="organization" placeholder="Organization" required class="w-full border-gray-300 rounded-lg px-4 py-2 mb-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Signup</button>
+        <a href="/recruiters/login" class="block mt-2 text-blue-500">Already have an account? Login</a>
+      </form>
+    </div>
+  
     <script>
-      alert('<%= messages.error %>');
+      function toggleSignupForm() {
+        var userTypeCheckbox = document.getElementById("userType");
+        var recruiterForm = document.querySelector(".recruiterForm");
+        var candidateForm = document.querySelector(".candidateForm");
+        
+        if (userTypeCheckbox.checked) {
+          recruiterForm.classList.add("hidden");
+          candidateForm.classList.remove("hidden");
+        } else {
+          recruiterForm.classList.remove("hidden");
+          candidateForm.classList.add("hidden");
+        }
+      }
+  
+      function validateForm() {
+        let passwd = document.getElementById("password").value;
+        let confirmpasswd = document.getElementById("confirmPassword").value;
+        if (passwd !== confirmpasswd) {
+          alert("Password and Confirm Password do not match");
+          return false;
+        }
+        return true;
+      }
     </script>
-  <% } %>
-
-  <label for="userType">Signup as Candidate</label>
-  <input type="checkbox" id="userType" onchange="toggleSignupForm()" />
-
-  <form action="/recruiters/signup" method="POST" class="recruiterForm" onsubmit="return validateForm()">
-    <label for="username">Username</label>
-    <input type="text" name="username" placeholder="username" />
-    <label for="email">Email</label>
-    <input type="email" name="email" placeholder="email" />
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="password" />
-    <label for="password">Confirm Password</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm password" required />
-    <label for="contact">Contact</label>
-    <input type="text" name="contact" placeholder="contact" />
-    <label for="company">Company</label>
-    <input type="text" name="company" placeholder="company" />
-    <button id="recruitersignup">Signup</button>
-    <a href="/recruiters/login">Already have an account,Login</a>
-  </form>
-
-  <form action="/candidates/signup" method="POST" class="candidateForm" onsubmit="return validateForm()">
-    <label for="username">Username</label>
-    <input type="text" name="username" placeholder="username" />
-    <label for="email">Email</label>
-    <input type="email" name="email" placeholder="email" />
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="password" />
-    <label for="password">Confirm Password</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm password" required />
-    <label for="contact">Contact</label>
-    <input type="text" name="contact" placeholder="contact" />
-    <label for="organization">Organization</label>
-    <input type="text" name="organization" placeholder="organization" />
-    <button id="candidatesignup">Signup</button>
-    <a href="/recruiters/login">Already have an account,Login</a>
-  </form>
-
-  <script>
-    function toggleSignupForm() {
-      var userTypeCheckbox = document.getElementById("userType");
-      var recruiterForm = document.querySelector(".recruiterForm");
-      var candidateForm = document.querySelector(".candidateForm");
-
-      if (userTypeCheckbox.checked) {
-        recruiterForm.style.display = "none";
-        candidateForm.style.display = "block";
-      } else {
-        recruiterForm.style.display = "block";
-        candidateForm.style.display = "none";
-      }
-    }
-
-    function validateForm() {
-      let passwd = document.getElementById("password").value;
-      let confirmpasswd = document.getElementById("confirmPassword").value;
-      if (passwd !== confirmpasswd) {
-        alert("Password and Confirm Password do not match");
-        return false; 
-      }
-      return true; 
-    }
-  </script>
-</body>
+  </body>
 </html>

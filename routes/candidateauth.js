@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -10,7 +11,7 @@ const cookieParser = require('cookie-parser');
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 router.use(session({
-    secret: 'dfgadgafsgvsgasfavsfbagav',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -20,21 +21,40 @@ router.use(cookieParser());
 router.use(rController.ifError);
 
 router.get('/candidates/profile',
- cController.checkAuthenticated,
- cController.candidateProfile);
+    cController.checkAuthenticated,
+    cController.candidateProfile);
 
 router.get('/candidates/apply',
- cController.checkAuthenticated,
- cController.candidateApplyPage);
+    cController.checkAuthenticated,
+    cController.candidateApplyPage);
 
-router.post('/candidates/signup', 
-cController.candidateSignup);
+router.get('/',
+    cController.homePage);
+
+router.get('/contact',
+    cController.contactPage);
+
+router.get('/candidates/appliedjobs',
+    cController.checkAuthenticated,
+    cController.candidateAppliedJobsPage);
+
+router.post('/candidates/signup',
+    cController.candidateSignup);
 
 router.post('/candidates/login',
-cController.candidateLogin);
+    cController.candidateLogin);
 
 router.delete('/candidates/logout',
-cController.candidateLogout);
+    cController.candidateLogout);
+
+router.patch('/candidates/apply/:id',
+    cController.checkAuthenticated,
+    cController.candidateApply);
+
+router.delete('/candidates/withdraw/:id',
+    cController.checkAuthenticated,
+    cController.candidateWithDraw);
+
 
 module.exports = router;
 

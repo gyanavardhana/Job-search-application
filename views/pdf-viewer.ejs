@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.2.146/pdf.min.js"
+      integrity="sha512-hA0/Bv8+ywjnycIbT0xuCWB1sRgOzPmksIv4Qfvqv0DOKP02jSor8oHuIKpweUCsxiWGIl+QaV0E82mPQ7/gyw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link href="/output.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100 flex justify-center items-center h-screen">
+    <canvas id="pdf-container" class="bg-white shadow-lg"></canvas>
+
+    <script>
+      pdfjsLib.getDocument("/public/<%= file %>").promise.then(function (pdf) {
+        pdf.getPage(1).then(function (page) {
+          const scale = 1.5;
+          const viewport = page.getViewport({ scale: scale });
+          const canvas = document.getElementById("pdf-container");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport,
+          };
+          page.render(renderContext);
+        });
+      });
+    </script>
+  </body>
+</html>

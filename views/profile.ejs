@@ -1,18 +1,28 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <link href="/output.css" rel="stylesheet">
 </head>
-<body>
-  
-  <h2>Welcome <%= user.username %> from <%= user.company %></h2>
-  <h1>Recruiters Profile Page</h1>
-  <form action="/recruiters/home?_method=GET" method="post" >
-    <button>Home Page</button>
-  </form>
-  <form action="/recruiters/logout?_method=DELETE" method="post" >
-      <button>Logout</button>
-  </form>
+<body class="bg-gray-100 " style="background-image: url('/rec.png'); background-size: cover; "></body>
+    <h1 class="text-3xl font-bold text-center mt-8">Recruiters Profile Page</h1>
+    <div class="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Welcome <%= user.username %> from <%= user.company %></h2>
+        <div class="profile-details mb-4">
+            <p><strong>Username:</strong> <%= user.username %></p>
+            <p><strong>Company:</strong> <%= user.company %></p>
+        </div>
+        
+        <div class="button-container flex justify-between">
+            <form action="/recruiters/home?_method=GET" method="post">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg">Home Page</button>
+            </form>
+            <form action="/recruiters/logout?_method=DELETE" method="post">
+                <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Logout</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
