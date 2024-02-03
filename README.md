@@ -109,6 +109,21 @@ Job Search Platform is a web application designed to help users find their dream
         |-- tailwind.config.js
 
 
+        
+# Project Info:
+
+- Codebase: https://github.com/gyanavardhana/Job-search-application.git
+
+# Contributors:
+We made a small project we appreciate any changes, suggestion and issues from your side and feel free to raise an issue and pull something useful we appreciate the effort
+
+# Contact:
+- mail: gyanavardhanmamidisetti@gmail.com
+- github usernames: gyanavardhana
+
+***This is a Project which gives a basic usage demo of Express,Mongodb,Mongoose,html,css,clientside and serverside javascript***
+
+
 
 
 
