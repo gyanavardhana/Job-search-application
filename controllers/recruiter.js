@@ -70,6 +70,7 @@ const recruitersignup = async (req, res) => {
             username: req?.body?.username,
             email: req?.body?.email,
             password: await bcrypt.hash(req?.body?.password, 10),
+            contact: req?.body?.contact,
             company: req?.body?.company
         });
 
