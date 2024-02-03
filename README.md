@@ -151,11 +151,13 @@ Job Search Platform is a web application designed to help users find their dream
 - ### Candidate Profile page:
   ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/01d38113-b2c3-4150-98ec-732feabfeb02)
 
-- ### Candidate Applyjob page:
-  ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/947ff1ae-edb1-47d5-b0a8-f49f985b54ee)
+- ### Candidate Apply jobs page:
+  ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/f1675e27-74a0-4693-946e-ce3c0ab84a4b)
 
 - ### Candidate Applied jobs page:
-  ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/f1675e27-74a0-4693-946e-ce3c0ab84a4b)
+  ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/947ff1ae-edb1-47d5-b0a8-f49f985b54ee)
+
+
 
 - ### Logout Feature for Recruiter & Candidate:
   ![image](https://github.com/gyanavardhana/Job-search-application/assets/89439095/01bef59f-221a-4f6d-91a7-7d86379936e7)
