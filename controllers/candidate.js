@@ -5,41 +5,39 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cons = require('../constants');
 
-
-async function candidateProfile(req, res) {
-    const user = await Candidate.findById(req.user?.id);
+const candidateProfile = async (req, res) => {
+    const user = await Candidate.findById(req?.user?.id);
     return res.render('candidateprofile', { user: user });
-}
+};
 
-
-async function candidateSignup(req, res) {
+const candidateSignup = async (req, res) => {
     try {
         const candidate = new Candidate({
-            username: req.body?.username,
-            email: req.body?.email,
-            password: await bcrypt.hash(req.body?.password, 10),
-            contact: req.body?.contact,
-            organization: req.body?.organization
+            username: req?.body?.username,
+            email: req?.body?.email,
+            password: await bcrypt.hash(req?.body?.password, 10),
+            contact: req?.body?.contact,
+            education: req?.body?.organization
         });
         await candidate.save();
         res.status(cons.ok).redirect('/recruiters/login');
     } catch (err) {
         if (err.code === cons.mongoerror) {
-            req.flash('error', cons.userexists);
-            res.render('signup', { messages: req.flash() });
+            req?.flash('error', cons.userexists);
+            res.render('signup', { messages: req?.flash() });
         } else {
             next(err);
         }
     }
-}
+};
 
-async function createToken(id) {
-    const token = jwt.sign({ id }, process.env.JWT_KEY , { expiresIn: 1000 });
+const createToken = async (id) => {
+    const token = jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: 1000 });
     return token;
-}
+};
 
-async function checkAuthenticated(req, res, next) {
-    const token = req.cookies?.jwt;
+const checkAuthenticated = async (req, res, next) => {
+    const token = req?.cookies?.jwt;
     if (!token) {
         return res.redirect('/recruiters/login');
     }
@@ -50,10 +48,10 @@ async function checkAuthenticated(req, res, next) {
     } catch (error) {
         res.redirect('/recruiters/login');
     }
-}
+};
 
-async function checkNotAuthenticated(req, res, next) {
-    const token = req.cookies?.jwt;
+const checkNotAuthenticated = async (req, res, next) => {
+    const token = req?.cookies?.jwt;
     if (token) {
         try {
             const user1 = jwt.verify(token, process.env.JWT_KEY);
@@ -65,18 +63,17 @@ async function checkNotAuthenticated(req, res, next) {
     } else {
         next();
     }
+};
 
-}
-
-async function comparePassword(password, user) {
+const comparePassword = async (password, user) => {
     const auth = await bcrypt.compare(password, user?.password);
     return auth;
-}
+};
 
-async function candidateLogin(req, res, next) {
-    const email = req.body?.email;
-    const password = req.body?.password;
-    expirydate  = 1000 * 60 * 60 * 24 * 3
+const candidateLogin = async (req, res, next) => {
+    const email = req?.body?.email;
+    const password = req?.body?.password;
+    expirydate = 1000 * 60 * 60 * 24 * 3
     try {
         const user = await Candidate.findOne({ email: email });
         if (user) {
@@ -86,94 +83,93 @@ async function candidateLogin(req, res, next) {
                 res.cookie('jwt', token, { maxAge: expirydate });
                 res.status(cons.ok).redirect('/candidates/profile');
             } else {
-                req.flash('error', cons.invalidlogin);
+                req?.flash('error', cons.invalidlogin);
                 res.redirect('/recruiters/login');
             }
         } else {
-            req.flash('error', cons.nouser);
+            req?.flash('error', cons.nouser);
             res.redirect('/recruiters/signup');
         }
     } catch (err) {
         next(err);
     }
-}
+};
 
-async function candidateLogout(req, res) {
+const candidateLogout = async (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
     return res.redirect('/recruiters/login');
-}
+};
 
-async function candidateAppliedJobsPage(req, res) {
+const candidateAppliedJobsPage = async (req, res) => {
     try {
-        const jobs = await Job.find({ candidates: { $in: [req.user?.id] } });
+        const jobs = await Job.find({ candidates: { $in: [req?.user?.id] } });
         res.render('AppliedJobs', { jobs: jobs });
-    } catch (err){
+    } catch (err) {
         next(err);
     }
-}
+};
 
-async function candidateApplyPage(req, res) {
-
+const candidateApplyPage = async (req, res) => {
     const jobs = await Job.find();
-    res.render('candidatejobs', { jobs: jobs , messages: req.flash()});
-}
+    res.render('candidatejobs', { jobs: jobs, messages: req?.flash() });
+};
 
+const jobAlreadyApplied = (job, user) => job.candidates.includes(user?.id);
 
-const jobAlreadyApplied = (job,user) => job.candidates.includes(user?.id);
-
-async function applyForJob(jobId, userId) {
+const applyForJob = async (jobId, userId) => {
     const updateJob = await Job.findByIdAndUpdate(jobId, { $push: { candidates: userId } });
     const updateUser = await Candidate.findByIdAndUpdate(userId, { $push: { appliedjobs: jobId } });
     return { updateJob, updateUser };
-}
+};
 
-async function withdrawApplication(jobId, userId) {
+const withdrawApplication = async (jobId, userId) => {
     const updateJob = await Job.findByIdAndUpdate(jobId, { $pull: { candidates: userId } });
     const updateUser = await Candidate.findByIdAndUpdate(userId, { $pull: { appliedjobs: jobId } });
     return { updateJob, updateUser };
-}
+};
 
-async function renderCandidateJobs(req, res) {
-    const jobs = await Job.find();
-    return res.render('candidatejobs', { jobs: jobs , messages: req.flash()});
-}
-
-
-async function candidateApply(req, res, next) {
+const candidateApply = async (req, res, next) => {
     try {
-        const id = req.params?.id;
+        const id = req?.params?.id;
         const job = await Job.findById(id);
-        if (jobAlreadyApplied(job,req.user)) {
-            req.flash('error', cons.applieddone);
-            renderCandidateJobs(req,res);
+        if (jobAlreadyApplied(job, req?.user)) {
+            req?.flash('error', cons.applieddone);
+            res.redirect('/candidates/apply');
         } else {
-            const { updateJob, updateUser } = await applyForJob(id, req.user?.id);
-            req.flash('success', cons.applysuccess);
-            renderCandidateJobs(req,res);
+            const { updateJob, updateUser } = await applyForJob(id, req?.user?.id);
+            req?.flash('success', cons.applysuccess);
+            res.redirect('/candidates/apply');
         }
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
-}
+};
 
-async function candidateWithDraw(req,res,next){
+const candidateWithDraw = async (req, res, next) => {
     try {
-        const id = req.params?.id;
+        const id = req?.params?.id;
         const job = await Job.findById(id);
         console.log(job.Date);
-        if (jobAlreadyApplied(job,req.user)) {
-            const { updateJob, updateUser } = await withdrawApplication(id, req.user?.id);
-            req.flash('success', cons.withdrawsuccess);
-            renderCandidateJobs(req,res);
+        if (jobAlreadyApplied(job, req?.user)) {
+            const { updateJob, updateUser } = await withdrawApplication(id, req?.user?.id);
+            req?.flash('success', cons.withdrawsuccess);
+            res.redirect('/candidates/apply');
         } else {
-            req.flash('error', cons.notapplied);
-            renderCandidateJobs(req,res);
+            req?.flash('error', cons.notapplied);
+            res.redirect('/candidates/apply');
         }
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
+};
+
+const homePage = (req, res) => {
+    res.render('Home');
 }
 
+const contactPage = (req, res) => {
+    res.render('contact');
+}
 
 module.exports = {
     candidateSignup,
@@ -185,5 +181,7 @@ module.exports = {
     candidateApplyPage,
     candidateApply,
     candidateWithDraw,
-    candidateAppliedJobsPage
-}
+    candidateAppliedJobsPage,
+    homePage,
+    contactPage
+};

@@ -21,33 +21,39 @@ router.use(cookieParser());
 router.use(rController.ifError);
 
 router.get('/candidates/profile',
- cController.checkAuthenticated,
- cController.candidateProfile);
+    cController.checkAuthenticated,
+    cController.candidateProfile);
 
 router.get('/candidates/apply',
- cController.checkAuthenticated,
- cController.candidateApplyPage);
+    cController.checkAuthenticated,
+    cController.candidateApplyPage);
+
+router.get('/',
+    cController.homePage);
+
+router.get('/contact',
+    cController.contactPage);
 
 router.get('/candidates/appliedjobs',
-cController.checkAuthenticated,
-cController.candidateAppliedJobsPage);
+    cController.checkAuthenticated,
+    cController.candidateAppliedJobsPage);
 
-router.post('/candidates/signup', 
-cController.candidateSignup);
+router.post('/candidates/signup',
+    cController.candidateSignup);
 
 router.post('/candidates/login',
-cController.candidateLogin);
+    cController.candidateLogin);
 
 router.delete('/candidates/logout',
-cController.candidateLogout);
+    cController.candidateLogout);
 
 router.patch('/candidates/apply/:id',
-cController.checkAuthenticated,
-cController.candidateApply);
+    cController.checkAuthenticated,
+    cController.candidateApply);
 
 router.delete('/candidates/withdraw/:id',
-cController.checkAuthenticated,
-cController.candidateWithDraw);
+    cController.checkAuthenticated,
+    cController.candidateWithDraw);
 
 
 module.exports = router;

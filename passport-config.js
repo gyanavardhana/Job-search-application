@@ -11,18 +11,18 @@ async function initialize(passport, getuserbyemail, getuserbyid) {
             }
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
-                return done(null, user, { message: 'Login Successful' , statusCode: datadictionary.ok});
+                return done(null, user, { message: 'Login Successful', statusCode: datadictionary.ok });
             } else {
-                return done(null, false, { message: 'Password incorrect' , statusCode: datadictionary.unauthorized});
+                return done(null, false, { message: 'Password incorrect', statusCode: datadictionary.unauthorized });
             }
         } catch (err) {
             return done(err);
         }
     };
-    
+
     passport.use(new localStrategy({ usernameField: 'email' }, authenticateuser));
     passport.serializeUser((user, done) => done(null, user.id));
-    passport.deserializeUser(async(id, done) => {
+    passport.deserializeUser(async (id, done) => {
         return done(null, await getuserbyid(id))
     });
 }

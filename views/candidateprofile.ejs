@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Candidate Profile</title>
+    <link href="/output.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Candidate Profile</h1>
-    <h1><%= user.username %></h1>
-    <form action="/candidates/logout?_method=DELETE" method="post">
-        <button>Logout</button>
-    </form>
-    <form action="/candidates/apply?_method=GET" method="post">
-        <button>Apply</button>
-    </form>
+<body class="bg-gray-100 " style="background-image: url('/can.png'); background-size: cover;"></body>
+    <h1 class="text-3xl font-bold text-center mt-8">Candidate Profile Page</h1>
+    <div class="max-w-md mx-auto mt-8 bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Welcome <%= user.username %> from <%= user.education %></h2>
+        <div class="profile-details mb-4">
+            <p><strong>Username:</strong> <%= user.username %></p>
+            <p><strong>Education:</strong> <%= user.education %></p>
+        </div>
+        
+        <div class="button-container flex justify-between">
+            <form action="/candidates/apply" method="get">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg">Apply Jobs</button>
+            </form>
+            <form action="/candidates/appliedjobs" method="get">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg">Applied jobs</button>
+            </form>
+            <form action="/candidates/logout?_method=DELETE" method="post">
+                <button class="bg-red-500 text-white px-4 py-2 rounded-lg">Logout</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

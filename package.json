@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon App.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tailwindcss -i ./views/styles.css -o ./src/output.css --watch"
+    "build": "npx tailwindcss -i ./views/styles.css -o ./public/output.css --watch"
   },
   "author": "",
   "license": "ISC",
