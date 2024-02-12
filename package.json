@@ -5,7 +5,7 @@
   "main": "App.js",
   "scripts": {
     "dev": "nodemon App.js",
-    "test": "jest --verbose --detectOpenHandles",
+    "test": "jest --verbose --collect-coverage",
     "build": "npx tailwindcss -i ./views/styles.css -o ./public/output.css --watch"
   },
   "author": "",

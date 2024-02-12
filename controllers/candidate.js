@@ -10,7 +10,7 @@ const candidateProfile = async (req, res) => {
     return res.render('candidateprofile', { user: user });
 };
 
-const candidateSignup = async (req, res) => {
+const candidateSignup = async (req, res, next) => {
     try {
         const candidate = new Candidate({
             username: req?.body?.username,
@@ -174,6 +174,8 @@ const contactPage = (req, res) => {
 module.exports = {
     candidateSignup,
     candidateLogin,
+    createToken,
+    comparePassword,
     candidateProfile,
     checkAuthenticated,
     checkNotAuthenticated,
