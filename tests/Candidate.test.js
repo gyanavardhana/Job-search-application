@@ -24,7 +24,7 @@ jest.mock('jsonwebtoken', () => ({
 
 describe('Candidate Controllers', () => {
     describe('candidateSignup', () => {
-        it('it should perform the signup perfectly', async () => {
+        it('should perform the signup perfectly', async () => {
             const req = {
                 body: {
                     username: 'sample',
@@ -256,5 +256,4 @@ describe('Candidate Controllers', () => {
     })
 
 });
-
 
