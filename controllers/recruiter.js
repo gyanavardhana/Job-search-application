@@ -64,7 +64,7 @@ const recruiterProfilePage = (req, res) => {
     }
 };
 
-const recruitersignup = async (req, res) => {
+const recruitersignup = async (req, res, next) => {
     try {
         const recruiter = new Recruiter({
             username: req?.body?.username,
@@ -137,7 +137,7 @@ const recruiterPostaJob = async (req, res, next) => {
     }
 };
 
-const recruiterMyJobs = async (req, res) => {
+const recruiterMyJobs = async (req, res, next) => {
     try {
         const user = req?.user;
         const jobs = await Job.find({ recruiter: user?._id });
@@ -148,7 +148,7 @@ const recruiterMyJobs = async (req, res) => {
     }
 };
 
-const recruiterDeleteJob = async (req, res) => {
+const recruiterDeleteJob = async (req, res, next) => {
     try {
         const id = req?.params?.id;
         const job = await Job.findById(id);
@@ -201,7 +201,18 @@ const viewFile = async (req, res) => {
     res.render('pdf-viewer', { file: req?.params?.file });
 };
 
-
+const recruiterDelete = async (req, res, next) => {
+    try {
+        const email = req?.params?.email;
+        const user = await Recruiter.findOne({ email: email });
+        const id = user?._id;
+        await Recruiter.findByIdAndDelete(id);
+        return res.status(cons.ok).send('User deleted');
+    }
+    catch (err) {
+        next(err);
+    }
+}
 module.exports = {
     ifError,
     recruiterSignupPage,
@@ -221,5 +232,6 @@ module.exports = {
     checkNotAuthenticated,
     upload,
     getFile,
-    viewFile
+    viewFile,
+    recruiterDelete
 };

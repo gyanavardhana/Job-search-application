@@ -11,6 +11,7 @@ const cons = {
     'userexists': "User already exists",
     "nouser": "User not found",
     "wrongpass": "Wrong Password",
+    "invalidLogin": "Invalid Login",
     "success": "Login Successful",
     "applieddone": "Job already APPLIED",
     "applysuccess": "Job APPLIED Successfully",

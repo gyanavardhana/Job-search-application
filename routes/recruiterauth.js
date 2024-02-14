@@ -76,4 +76,7 @@ router.get('/recruiters/view/:file',
     rController.getFile,
     rController.viewFile);
 
+router.delete('/recruiters/delete/:email',
+    rController.recruiterDelete);
+
 module.exports = router;
